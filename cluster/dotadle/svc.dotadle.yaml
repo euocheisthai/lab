@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dotadle-api
+  labels:
+    app: dotadle-api
+spec:
+  clusterIP: 10.43.69.10
+  clusterIPs:
+  - 10.43.69.10
+  type: ClusterIP
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: dotadle-api

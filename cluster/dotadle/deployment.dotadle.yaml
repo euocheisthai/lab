@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dotadle-api
+  labels:
+    app: dotadle-api
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: dotadle-api
+  template:
+    metadata:
+      labels:
+        app: dotadle-api
+    spec:
+      imagePullSecrets:
+        - name: euocheisthai
+      containers:
+      - name: dotadle-api
+        image: euocheisthai/gorldle-api:0.1.2
+        ports:
+          - containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /api/ping
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 30
+

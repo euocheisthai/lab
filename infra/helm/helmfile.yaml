@@ -1,0 +1,48 @@
+helmBinary: /usr/bin/helm
+
+repositories:
+  - name: prometheus-community
+    url: https://prometheus-community.github.io/helm-charts
+  - name: grafana
+    url: https://grafana.github.io/helm-charts
+  - name: jetstack
+    url: https://charts.jetstack.io
+  - name: twuni
+    url: https://helm.twun.io
+
+releases:
+  - name: prometheus-operator-crds
+    namespace: prometheus
+    createNamespace: true
+    chart: prometheus-community/prometheus-operator-crds
+  - name: kps
+    namespace: prometheus
+    createNamespace: true
+    chart: prometheus-community/kube-prometheus-stack
+    set:
+      - name: rbac.create
+        value: false
+  - name: cert-manager
+    namespace: cert-manager
+    createNamespace: true
+    chart: jetstack/cert-manager
+    set:
+      - name: prometheus.enabled
+        value: true
+      - name: crds.enabled
+        value: true
+  - name: registry
+    namespace: registry
+    createNamespace: true
+    chart: twuni/docker-registry
+    set:
+      - name: persistence.enabled
+        value: true
+      - name: persistence.size
+        value: 2Gi
+      - name: service.type
+        value: ClusterIP
+      - name: service.clusterIP
+        value: 10.43.69.11
+      - name: service.port
+        value: 80
