@@ -5,10 +5,10 @@ metadata:
   labels:
     app: dotadle-api
 spec:
+  type: ClusterIP
   clusterIP: 10.43.69.10
   clusterIPs:
   - 10.43.69.10
-  type: ClusterIP
   ports:
   - port: 80
     protocol: TCP
