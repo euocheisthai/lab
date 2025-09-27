@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loxosceles-api
+  labels:
+    app: loxosceles-api
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: loxosceles-api
+  template:
+    metadata:
+      labels:
+        app: loxosceles-api
+    spec:
+      imagePullSecrets:
+        - name: euocheisthai
+      containers:
+      - name: loxosceles-api
+        image: euocheisthai/loxosceles-api:0.4
+        env:
+        - name: LOXOSCELES_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: loxosceles-token-secret
+              key: token
+        ports:
+          - containerPort: 8080

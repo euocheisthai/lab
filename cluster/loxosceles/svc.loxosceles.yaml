@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: loxosceles-api
+  labels:
+    app: loxosceles-api
+spec:
+  type: ClusterIP
+  clusterIP: 10.43.69.13
+  clusterIPs:
+  - 10.43.69.13
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: loxosceles-api
