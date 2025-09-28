@@ -27,5 +27,22 @@ spec:
             secretKeyRef:
               name: loxosceles-token-secret
               key: token
+        - name: MONGODB_HOST
+          value: mongo-service:27017
+        - name: MONGODB_USER
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secrets
+              key: MONGODB_USER
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secrets
+              key: MONGODB_PASSWORD
+        - name: MONGODB_DB
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secrets
+              key: MONGODB_DB
         ports:
           - containerPort: 8080
