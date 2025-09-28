@@ -20,7 +20,7 @@ spec:
         - name: euocheisthai
       containers:
       - name: loxosceles-api
-        image: euocheisthai/loxosceles-api:0.4
+        image: euocheisthai/loxosceles-api:0.5
         env:
         - name: LOXOSCELES_TOKEN
           valueFrom:
