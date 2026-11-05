@@ -1,0 +1,30 @@
+# mounted by postgres-config at /etc/postgresql
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  labels:
+    app: postgres-gitlab
+data:
+  pg_hba.conf: |
+    # TYPE  DATABASE  USER     ADDRESS       METHOD
+
+    local   all       admuser               trust
+    local   all       all                   scram-sha-256
+
+    host    all       all      0.0.0.0/0    scram-sha-256
+    host    all       all      ::/0         scram-sha-256
+  postgresql.conf: |
+    hba_file = '/etc/postgresql/pg_hba.conf'
+
+    listen_addresses = '*'
+    port = 5432
+    password_encryption = 'scram-sha-256'
+
+    ssl = off
+
+    log_destination = 'stderr'
+    logging_collector = off
+    log_line_prefix = '%m [%p] %q%u@%d '
+    log_timezone = 'UTC'
+    timezone = 'UTC'

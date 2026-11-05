@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-pv
+  labels:
+    app: postgres-gitlab
+spec:
+  claimRef:
+    name: postgres-pvc
+  capacity:
+    storage: 9Gi
+  accessModes:
+    - ReadWriteMany
+  storageClassName: pg-manual-pvc
+  volumeMode: Filesystem # or Block
+  hostPath:
+    path: "/Volumes/pg/"
+  # persistentVolumeReclaimPolicy: Retain
+  # nfs:
+  #   server: example.host.com
+  #   path: /mnt/data/blah
