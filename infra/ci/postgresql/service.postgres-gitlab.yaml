@@ -5,8 +5,8 @@ metadata:
   labels:
     app: postgres-gitlab
 spec:
-  selector:
-    app: postgres-gitlab
+  clusterIP: 10.96.0.15
   ports:
     - port: 5432
-  clusterIP: 10.96.0.15
+  selector:
+    app: postgres-gitlab
