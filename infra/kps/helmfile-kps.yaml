@@ -1,0 +1,21 @@
+helmBinary: /usr/bin/helm
+
+repositories:
+  - name: prometheus-community
+    url: https://prometheus-community.github.io/helm-charts
+  - name: grafana
+    url: https://grafana.github.io/helm-charts
+
+
+releases:
+  - name: prometheus-operator-crds
+    namespace: prometheus
+    createNamespace: true
+    chart: prometheus-community/prometheus-operator-crds
+  - name: kps
+    namespace: prometheus
+    createNamespace: true
+    chart: prometheus-community/kube-prometheus-stack
+    set:
+      - name: rbac.create
+        value: false

@@ -1,0 +1,22 @@
+helmBinary: /usr/bin/helm
+
+repositories:
+  - name: twuni
+    url: https://helm.twun.io
+
+releases:
+  - name: registry
+    namespace: registry
+    createNamespace: true
+    chart: twuni/docker-registry
+    set:
+      - name: persistence.enabled
+        value: true
+      - name: persistence.size
+        value: 2Gi
+      - name: service.type
+        value: ClusterIP
+      - name: service.clusterIP
+        value: 10.43.69.11
+      - name: service.port
+        value: 80
