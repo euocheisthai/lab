@@ -25,6 +25,7 @@ spec:
               value: admuser
             - name: POSTGRES_PASSWORD
               valueFrom:
+                # k create secret generic postgres-secret --from-literal=password=<password>
                 secretKeyRef:
                   name: postgres-secret
                   key: password

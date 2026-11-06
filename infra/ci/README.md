@@ -3,8 +3,8 @@ https://docs.gitlab.com/runner/install/kubernetes/
 https://docs.gitlab.com/charts/installation/tools/
 
 TODO
-set up redis + psql
-set up gitlab
-set up gitlab runners
+done | set up redis + psql
+wip |  set up gitlab:
+https://docs.gitlab.com/charts/advanced/external-object-storage/ --> https://docs.gitlab.com/charts/installation/tools/#networking-and-dns ---> https://docs.gitlab.com/charts/installation/deployment/
+set up gitlab runners - helm chart is supposed to have cert-manager installed
 ???
-set up ci?
