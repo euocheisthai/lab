@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: garage-config
+data:
+  garage.toml: |
+    metadata_dir = "/mnt/meta"
+    data_dir = "/mnt/data"
+
+    db_engine = "lmdb"
+
+    replication_mode = "none"
+
+    compression_level = 1
+
+    rpc_bind_addr = "[::]:3901"
+    rpc_public_addr = "127.0.0.1:3901"
+    rpc_secret = "7e88ad947b461a4527481382323ae9bdc89d247c0c4fb38d7f950a8985510a62"
+
+    [s3_api]
+    s3_region = "us-east-1"
+    api_bind_addr = "[::]:3900"
+    root_domain = ".s3.storage-nas.satyrikon"
+
+    [s3_web]
+    bind_addr = "[::]:3902"
+    root_domain = ".web.storage-nas.satyrikon"
+
+    [admin]
+    api_bind_addr = "[::]:3903"
+    admin_token = "6c187938886bd094d6b4506eef480edf"
+    metrics_token = "b6504a88ad4f23cfb36d2b5104a63996"

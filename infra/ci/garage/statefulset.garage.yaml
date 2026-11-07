@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: garage-s3-storage
+  labels:
+    app: garage-s3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: garage-s3
+  template:
+    metadata:
+      labels:
+        app: garage-s3
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: "minikube"
+
+      containers:
+      - name: garage
+        image: dxflrs/garage:v2.5.0
+        imagePullPolicy: IfNotPresent
+
+        resources:
+          requests:
+            memory: "2Gi"
+            cpu: "1000m"
+          limits:
+            memory: "4Gi"
+            cpu: "2000m"
+
+        ports:
+        - containerPort: 3900
+          name: s3-api
+          protocol: TCP
+        - containerPort: 3901
+          name: rpc
+          protocol: TCP
+        - containerPort: 3902
+          name: web
+          protocol: TCP
+        - containerPort: 3903
+          name: admin
+          protocol: TCP
+
+        env:
+        - name: RUST_LOG
+          value: "garage=info"
+
+        volumeMounts:
+        - name: garage-data
+          mountPath: /mnt/data
+        - name: garage-meta
+          mountPath: /mnt/meta
+        - name: garage-app
+          mountPath: /etc/garage
+        - name: garage-config
+          mountPath: /etc/garage/garage.toml
+          subPath: garage.toml
+
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3903
+            httpHeaders:
+            - name: Authorization
+              value: "Bearer 6c187938886bd094d6b4506eef480edf"
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3903
+            httpHeaders:
+            - name: Authorization
+              value: "Bearer 6c187938886bd094d6b4506eef480edf"
+          initialDelaySeconds: 15
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+
+      volumes:
+      - name: garage-data
+        hostPath:
+          path: /Volumes/garage/data
+          type: Directory
+      - name: garage-meta
+        hostPath:
+          path: /Volumes/garage/meta
+          type: Directory
+      - name: garage-app
+        hostPath:
+          path: /Volumes/garage/app
+          type: Directory
+      - name: garage-config
+        configMap:
+          name: garage-config
