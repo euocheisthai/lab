@@ -5,7 +5,7 @@ metadata:
   labels:
     app: redis-gitlab
 spec:
-  clusterIP: 10.96.0.15
+  clusterIP: None
   ports:
     - port: 6379
       targetPort: 6379

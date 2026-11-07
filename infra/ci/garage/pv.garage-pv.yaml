@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: garage-pv
+  labels:
+    app: garage-s3
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  storageClassName: garage-manual-pvc
+  hostPath:
+    path: "/Volumes/garage/"

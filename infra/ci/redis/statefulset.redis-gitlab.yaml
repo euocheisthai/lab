@@ -51,7 +51,9 @@ spec:
     - metadata:
         name: redis-data
       spec:
-        accessModes: ["ReadWriteOnce"]
+        storageClassName: redis-manual-pvc
+        accessModes:
+          - ReadWriteOnce
         resources:
           requests:
             storage: 4Gi

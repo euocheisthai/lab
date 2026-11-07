@@ -5,12 +5,10 @@ metadata:
   labels:
     app: postgres-gitlab
 spec:
-  claimRef:
-    name: postgres-pvc
   capacity:
     storage: 9Gi
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   storageClassName: pg-manual-pvc
   volumeMode: Filesystem # or Block
   hostPath:

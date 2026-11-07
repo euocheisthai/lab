@@ -5,7 +5,7 @@ metadata:
   labels:
     app: postgres-gitlab
 spec:
-  clusterIP: 10.96.0.16
+  clusterIP: None
   ports:
     - port: 5432
       targetPort: 5432

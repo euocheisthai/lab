@@ -47,6 +47,7 @@ spec:
     - metadata:
         name: postgres-pvc
       spec:
+        storageClassName: pg-manual-pvc
         accessModes:
           - ReadWriteOnce
         resources:

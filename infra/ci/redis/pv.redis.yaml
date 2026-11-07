@@ -5,12 +5,10 @@ metadata:
   labels:
     app: redis-gitlab
 spec:
-  claimRef:
-    name: redis-pvc
   capacity:
     storage: 4Gi
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   storageClassName: redis-manual-pvc
   volumeMode: Filesystem
   hostPath:
