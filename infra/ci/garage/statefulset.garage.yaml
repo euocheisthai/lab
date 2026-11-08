@@ -45,10 +45,32 @@ spec:
           env:
             - name: RUST_LOG
               value: "garage=info"
+            - name: GARAGE_ADMIN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: garage-secrets
+                  key: admin-token
+            - name: GARAGE_RPC_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: garage-secrets
+                  key: rpc-secret
+            - name: GARAGE_METRICS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: garage-secrets
+                  key: metrics-token
             - name: GARAGE_DEFAULT_ACCESS_KEY
-              value: "GK61ef06e80d17b8b928be677124929e63"
+              valueFrom:
+                secretKeyRef:
+                  name: garage-secrets
+                  key: default-access-key
+
             - name: GARAGE_DEFAULT_SECRET_KEY
-              value: "17ed974d1a1aa07318283b759682dba5650dedb4b8cde8a9b9ba8c8e093e11e3"
+              valueFrom:
+                secretKeyRef:
+                  name: garage-secrets
+                  key: default-secret-key
             - name: GARAGE_DEFAULT_BUCKET
               value: "bucket-main"
           livenessProbe:
@@ -58,6 +80,10 @@ spec:
               httpHeaders:
                 - name: Authorization
                   value: "Bearer 6c187938886bd094d6b4506eef480edf"
+                  # valueFrom:
+                  #   secretKeyRef:
+                  #     name: garage-secrets
+                  #     key: authorization-token
             initialDelaySeconds: 30
             periodSeconds: 10
             timeoutSeconds: 5
