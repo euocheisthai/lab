@@ -1,0 +1,10 @@
+apiVersion: traefik.io/v1alpha1
+kind: ServersTransport
+metadata:
+  name: garage-transport
+  namespace: default
+  labels:
+    app: garage-s3
+spec:
+  forwardingTimeouts:
+    dialTimeout: 300s

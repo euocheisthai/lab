@@ -4,6 +4,8 @@ metadata:
   name: garage-s3-service
   labels:
     app: garage-s3
+  annotations:
+    traefik.ingress.kubernetes.io/service.serverstransport: default-garage-transport@kubernetescrd
 spec:
   type: ClusterIP
   clusterIP: None

@@ -48,28 +48,27 @@ spec:
             - name: GARAGE_ADMIN_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: garage-secrets
-                  key: admin-token
+                  name: garage-secrets-admintoken
+                  key: admin_token
             - name: GARAGE_RPC_SECRET
               valueFrom:
                 secretKeyRef:
-                  name: garage-secrets
-                  key: rpc-secret
+                  name: garage-secrets-rpctoken
+                  key: rpc_secret
             - name: GARAGE_METRICS_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: garage-secrets
-                  key: metrics-token
+                  name: garage-secrets-metricstoken
+                  key: metrics_token
             - name: GARAGE_DEFAULT_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: garage-secrets
+                  name: garage-secrets-acckey
                   key: default-access-key
-
             - name: GARAGE_DEFAULT_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: garage-secrets
+                  name: garage-secrets-seckey
                   key: default-secret-key
             - name: GARAGE_DEFAULT_BUCKET
               value: "bucket-main"
