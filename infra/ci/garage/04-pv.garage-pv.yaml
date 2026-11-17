@@ -1,6 +1,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
+  namespace: gitlab
   name: garage-pv
   labels:
     app: garage-s3

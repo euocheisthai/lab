@@ -1,3 +1,5 @@
+if not using k3s with traefik by default:
+
 for traefik, [install](https://doc.traefik.io/traefik/reference/install-configuration/providers/kubernetes/kubernetes-crd/) crds and rbac first:
 
 ```

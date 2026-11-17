@@ -2,7 +2,7 @@ apiVersion: traefik.io/v1alpha1
 kind: Middleware
 metadata:
   name: garage-s3-cors
-  namespace: default
+  namespace: gitlab
   labels:
     app: garage-s3
 spec:

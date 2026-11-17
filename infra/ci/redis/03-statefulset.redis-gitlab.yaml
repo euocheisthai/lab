@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
+  namespace: gitlab
   name: redis-gitlab
   labels:
     app: redis-gitlab
@@ -56,4 +57,4 @@ spec:
           - ReadWriteOnce
         resources:
           requests:
-            storage: 4Gi
+            storage: 2Gi

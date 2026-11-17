@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
+  namespace: gitlab
   name: garage-s3-storage
   labels:
     app: garage-s3
