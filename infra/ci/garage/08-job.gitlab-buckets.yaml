@@ -1,0 +1,59 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: garage-gitlab-buckets
+  namespace: gitlab
+spec:
+  backoffLimit: 4
+  activeDeadlineSeconds: 300
+  template:
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      containers:
+        - name: provision
+          image: ghcr.io/curvegrid/jq-alpine:3.23.3
+          env:
+            - name: GARAGE_ADMIN_URL
+              value: http://garage-s3-service:3903
+            - name: GARAGE_ADMIN_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: garage-secrets-admintoken
+                  key: admin_token
+            - name: GITLAB_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: gitlab-rails-storage
+                  key: access-key-id
+          command: ["/bin/sh", "-eu", "-c"]
+          args:
+            - |
+              garage() {
+                operation=$1
+                shift
+                if response=$(curl --noproxy '*' --fail-with-body --silent --show-error --max-time 10 \
+                    -H "Authorization: Bearer $GARAGE_ADMIN_TOKEN" "$GARAGE_ADMIN_URL/v2/$operation" "$@"); then
+                  printf '%s\n' "$response"
+                else
+                  status=$?
+                  printf 'Garage /v2/%s failed\n' "$operation" >&2
+                  printf '%s\n' "$response" | jq -r 'objects | [.code, .message] | map(strings) | join(": ")' >&2 2>/dev/null || :
+                  return "$status"
+                fi
+              }
+
+              buckets=$(garage ListBuckets)
+              for name in gitlab-artifacts gitlab-uploads gitlab-lfs gitlab-packages; do
+                printf 'Provisioning %s\n' "$name" >&2
+                id=$(printf '%s\n' "$buckets" | jq -r --arg name "$name" '.[] | select(.globalAliases | index($name)) | .id')
+                if [ -z "$id" ]; then
+                  payload=$(jq -n --arg name "$name" '{globalAlias: $name}')
+                  created=$(garage CreateBucket --json "$payload")
+                  id=$(printf '%s\n' "$created" | jq -er '.id | strings | select(length > 0)')
+                fi
+
+                grant=$(jq -n --arg id "$id" --arg key "$GITLAB_ACCESS_KEY_ID" '{bucketId: $id, accessKeyId: $key, permissions: {read: true, write: true}}')
+                garage AllowBucketKey --json "$grant" > /dev/null
+                printf '%s: ready\n' "$name"
+              done
