@@ -7,7 +7,7 @@ metadata:
     app: garage-s3
   annotations:
     # references use <namespace>-<name>@kubernetescrd
-    traefik.ingress.kubernetes.io/router.middlewares: default-garage-s3-cors@kubernetescrd
+    traefik.ingress.kubernetes.io/router.middlewares: gitlab-garage-s3-cors@kubernetescrd
     # cert-manager.io/cluster-issuer: "letsencrypt-prod"
 spec:
   ingressClassName: traefik
