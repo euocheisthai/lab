@@ -3,3 +3,5 @@
 **/unsealed.yaml
 **/secret.loxosceles-tokens.yaml
 **/secret.mongodb.yaml
+**/arch.md
+**/infra/ci/README_gitlab.md

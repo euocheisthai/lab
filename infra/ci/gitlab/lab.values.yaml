@@ -1,0 +1,56 @@
+# Apply to the upstream GitLab 10.x chart.
+global:
+  edition: ce
+  hosts:
+    domain: satyrikon
+    https: false
+  gatewayApi:
+    enabled: false
+    installEnvoy: false
+  ingress:
+    enabled: true
+    class: traefik
+    configureCertmanager: false
+    tls:
+      enabled: false
+  psql:
+    host: postgres-gitlab.gitlab.svc.cluster.local
+    database: gitlabhq_production
+    username: admuser
+    password:
+      secret: postgres-secret
+      key: password
+  redis:
+    host: redis-gitlab.gitlab.svc.cluster.local
+    auth:
+      enabled: false
+  registry:
+    enabled: false
+  kas:
+    enabled: false
+  appConfig:
+    object_store:
+      enabled: true
+      proxy_download: true
+      connection:
+        secret: gitlab-rails-storage
+        key: connection
+    artifacts:
+      bucket: gitlab-artifacts
+    uploads:
+      bucket: gitlab-uploads
+    lfs:
+      bucket: gitlab-lfs
+    packages:
+      bucket: gitlab-packages
+
+installCertmanager: false
+
+nginx-ingress:
+  enabled: false
+
+prometheus:
+  install: false
+
+gitlab-runner:
+  install: false

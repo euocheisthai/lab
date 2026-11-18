@@ -1,0 +1,13 @@
+gitlabUrl: http://gitlab.satyrikon
+concurrent: 1
+rbac:
+  create: true
+runners:
+  secret: gitlab-runner-auth
+  config: |
+    [[runners]]
+      [runners.kubernetes]
+        namespace = "{{ .Release.Namespace }}"
+        image = "alpine:3"
+        privileged = false
+        automount_service_account_token = false
