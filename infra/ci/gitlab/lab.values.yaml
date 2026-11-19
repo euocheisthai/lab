@@ -8,6 +8,7 @@ global:
     enabled: false
     installEnvoy: false
   ingress:
+    apiVersion: networking.k8s.io/v1
     enabled: true
     class: traefik
     configureCertmanager: false
@@ -45,6 +46,9 @@ global:
       bucket: gitlab-packages
 
 installCertmanager: false
+
+registry:
+  enabled: false
 
 nginx-ingress:
   enabled: false
