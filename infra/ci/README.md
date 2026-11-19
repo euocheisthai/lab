@@ -1,4 +1,8 @@
-## prep for gitlab deployment
+## prep
+
+application order: gitlab-base -> postgres (don't forget the secrets) -> redis -> garage (generate keys w `openssl rand -hex 32/16`)
+
+## gitlab deployment
 
 ### postgres
 
@@ -36,7 +40,27 @@ helm repo add gitlab https://charts.gitlab.io/
 helm repo update gitlab
 helm search repo gitlab/gitlab --versions
 
-helm template gitlab gitlab/gitlab -n gitlab --version "10.5.7" -f ~/lab/infra/ci/gitlab/lab.values.yaml > /tmp/gitlab-rendered.yaml # check for bullshit
+helm template gitlab gitlab/gitlab -n gitlab --version "10.5.7" -f ~/lab/infra/ci/gitlab/lab.values.yaml > /tmp/gitlab-rendered.yaml 
+# ^ check for bullshit
 
 helm upgrade --install gitlab gitlab/gitlab -n gitlab --version "10.5.7" -f ~/lab/infra/ci/gitlab/lab.values.yaml --wait
+# ^ this will take a while
+```
+
+### checking whether it works
+
+at this point /etc/hosts should contain a record of the cluster external ip mapping to gitlab.satyrikon. In case it doesn't (or i'm on mac again)...
+
+`curl --resolve gitlab.satyrikon:80:10.43.0.100 http://gitlab.satyrikon/-/readiness`
+
+### adding runners
+
+saved the auth token to an ignored file `~/lab/infra/ci/gitlab-runners/auth-token`.
+
+```sh
+k -n gitlab-runners create secret generic gitlab-runner-auth --from-file=runner-token=~/lab/infra/ci/gitlab-runners/auth-token --from-literal=runner-registration-token=''
+
+helm search repo gitlab/gitlab-runner --versions
+
+helm upgrade --install gitlab-runner gitlab/gitlab-runner -n gitlab-runners --version "0.94.3" -f ~lab/infra/ci/gitlab/runner.lab.values.yaml --wait
 ```
