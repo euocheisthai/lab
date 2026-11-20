@@ -1,0 +1,27 @@
+releases:
+  - name: arc
+    namespace: arc-systems
+    createNamespace: true
+    chart: oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set-controller
+    version: "0.15.1"
+    values:
+      - serviceAccount:
+          name: arc-controller
+
+  - name: lab-runners
+    namespace: arc-runners
+    createNamespace: true
+    chart: oci://ghcr.io/actions/actions-runner-controller-charts/gha-runner-scale-set
+    version: "0.15.1"
+    needs:
+      - arc-systems/arc
+    values:
+      - githubConfigUrl: https://github.com/euocheisthai/gorldle
+        githubConfigSecret: arc-gorldle
+        controllerServiceAccount:
+          namespace: arc-systems
+          name: arc-controller
+        minRunners: 0
+        maxRunners: 1
+        containerMode:
+          type: dind
