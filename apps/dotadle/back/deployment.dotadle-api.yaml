@@ -20,9 +20,13 @@ spec:
         - name: euocheisthai
       containers:
       - name: dotadle-api
-        image: euocheisthai/gorldle-api:0.1.2
+        image: euocheisthai/gorldle-api:0.1.3
         ports:
           - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /api/ping
+            port: 8080
         livenessProbe:
           httpGet:
             path: /api/ping
